@@ -41,18 +41,9 @@ _asm_main:
         ; because the print_string below needs eax for the message address.
         ;
 
-        mov     eax, esi ; eax = C
-        mov     ebx, 9
-        mul     ebx
-        mov     edx, 0
-        mov     ebx, 5 ; ebx = 5
-        div     ebx ; eax = (c*9)/5
-        add     eax, 32 ; eax = (c*9)/5 +32
-        mov     edi, eax ; temp storage of F 
-
         mov     eax, f_msg
         call    print_string
-        mov     eax, edi
+        ; TODO: put your Fahrenheit value in eax here
         call    print_int
         call    print_nl
 
@@ -62,35 +53,20 @@ _asm_main:
         ; Same shape as TODO 1. Start from the Fahrenheit value you just
         ; computed, not from Celsius.
         ;
-        mov     eax, edi ; eax= F
-        sub     eax, 32 ; F-32
-        mov     ebx, 5 ; ebx=5
-        mul     ebx
-        mov     edx, 0 ; for div
-        mov     ebx, 9
-        div     ebx ; eax = ((F - 32) * 5) / 9 
-        add     eax, 273
-        mov     esi, eax ; temp storage for k
-
 
         mov     eax, k_msg
         call    print_string
         ; TODO: put your Kelvin value in eax here
-        mov     eax, esi
         call    print_int
         call    print_nl
 
         ;
         ; TODO 3: back to Celsius.  C = K - 273
         ;
-        mov     eax, esi
-        sub     eax, 273 ; K-273
-        mov     ebx, eax
 
         mov     eax, c_msg
         call    print_string
         ; TODO: put your Celsius value in eax here
-        mov     eax, ebx
         call    print_int
         call    print_nl
 
