@@ -1,4 +1,3 @@
-;
 ; Block 3 starter: one bit pattern, read several ways.
 ;
 ; This assembles and runs as it stands. It prompts, reads a number, and prints
@@ -6,7 +5,7 @@
 ;
 ; Rename it first:
 ;
-;       cp b3_starter.asm signs.asm
+;        cp b3_starter.asm signs.asm
 ;
 ; Keep print_uint.inc in the same folder. The %include below needs it.
 ;
@@ -42,6 +41,8 @@ _asm_main:
         ;
         mov     eax, signed_msg
         call    print_string
+        mov     eax, esi                 ; move esi to eax so we can print
+        call    print_int                ; 
         call    print_nl
 
         ;
@@ -51,6 +52,8 @@ _asm_main:
         ;
         mov     eax, unsigned_msg
         call    print_string
+        mov     eax, esi                 ; move to eax for printing
+        call    print_uint               ; 
         call    print_nl
 
         ;
@@ -63,7 +66,17 @@ _asm_main:
         ;
         mov     eax, div_msg
         call    print_string
-        call    print_nl
+        mov     eax, esi                 ; put the dividend to the eax
+        cdq                              ; for signed extends 
+        mov     ebx, 7                   
+        idiv    ebx                      
+        mov     edi, edx                 ; save first before it gets overwritten when printing
+        call    print_int                
+        mov     eax, rem_msg             
+        call    print_string             
+        mov     eax, edi                
+        call    print_int     
+        call    print_nl          
 
         ;
         ; TODO 4: multiply esi by 100000 with mul, the unsigned one.
@@ -74,7 +87,21 @@ _asm_main:
         ;
         mov     eax, umul_msg
         call    print_string
-        call    print_nl
+        mov     eax, esi
+        mov     ebx, 100000
+        mul     ebx
+        cmp     edx, 0                  ; check if edx is 0 since it means that there is no overflow and that it fits in eax
+        jne     umul_overflow      
+        call    print_uint              ; if no overflow
+        jmp     umul_done
+
+        umul_overflow:
+                mov     eax, over_msg
+                call    print_string
+        umul_done:
+                call    print_nl
+
+
 
         ;
         ; TODO 5: multiply esi by 100000 again, this time with the two-operand
@@ -91,6 +118,17 @@ _asm_main:
         ;
         mov     eax, imul_msg
         call    print_string
+        mov     eax, esi
+        imul    eax, 100000
+
+        jo      imul_overflow            
+        call    print_int                
+        jmp     imul_done
+
+        imul_overflow:                           
+        mov     eax, over_msg            
+        call    print_string             
+        imul_done:                              
         call    print_nl
 
         popa
