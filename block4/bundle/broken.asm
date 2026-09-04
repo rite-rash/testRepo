@@ -29,6 +29,7 @@ _asm_main:
         mov     ebx, eax
 
         mov     eax, 1000
+        mov     edx, 0 ; clear the edx to remove garbage val before editing
         div     ebx
 
         mov     ecx, eax
