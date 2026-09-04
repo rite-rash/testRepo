@@ -135,3 +135,10 @@ _asm_main:
         mov     eax, 0
         leave
         ret
+
+
+; notes:
+; for unsigned value, 
+; we treat the msb as standard value then multiply to given100 000 it shouldnt be > 2^32-1w
+; if mpositive standard val is identical
+; if neg add 2^32
